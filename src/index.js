@@ -8,6 +8,9 @@ const port = 3000
 
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(express.urlencoded({ extended: true })) // Use for form html.
+app.use(express.json()) // Use for code js: XML HTTP request, fetch, axios, request
+
 // app.use(morgan('combined'))
 
 // Template engine
@@ -27,13 +30,13 @@ app.get('/news', (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-  console.log('req-get',req.query.q)
+  console.log('req-get-search',req.query.q)
   res.render('search')
 })
 
 app.post('/search', (req, res) => {
-  console.log('req-post',req.query.q)
-  res.render('search')
+  console.log('req-post-search',req.body)
+  res.send('search')
 })
 
 // 127.0.0.1:3000
