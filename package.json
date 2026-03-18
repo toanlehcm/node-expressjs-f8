@@ -6,7 +6,13 @@
     "start": "node src/index.js",
     "dev": "nodemon --inspect src/index.js",
     "watch": "sass --watch src/resources/scss/app.scss src/public/css/app.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "refactor": "prettier --single-quote --trailing-comma all --tab-width 4 --write 'src/**/*.{js,json,scss}'",
+    "refactor-staged": "lint-staged",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
   },
   "repository": {
     "type": "git",
@@ -28,8 +34,11 @@
     "express-handlebars": "^8.0.3"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.14",
+    "prettier": "^3.8.1",
     "sass": "^1.98.0"
   }
 }
