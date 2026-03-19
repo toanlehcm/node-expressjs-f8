@@ -7,13 +7,17 @@ const app = express();
 const port = 3000;
 
 const route = require('./routes');
+const db = require('./config/db');
+
+// Connect to DB
+db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({ extended: true })); // Use for form html.
 app.use(express.json()); // Use for code js: XML HTTP request, fetch, axios, request
 
-// app.use(morgan('combined'))
+app.use(morgan('combined'))
 
 // Template engine
 app.engine(
