@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const { mutipleMongooseToObject } = require('../../util/mongoose');
 
 class SiteController {
     // function constructor.
@@ -12,7 +13,13 @@ class SiteController {
             // Using await to "wait" mongoose++ find data.
             const courses = await Course.find({});
             console.log('Courses:', courses);
-            res.json(courses);
+            // res.json(courses);
+            
+            // Convert mongoose documents to plain javascript objects
+            // because handlebars security prevents access to prototype properties
+            const coursesData = mutipleMongooseToObject(courses);
+            
+            res.render('home', { courses: coursesData });
         } catch (err) {
             // If there is an error, it will jump to this catch block.
             console.log('Error fetching courses:', err);
