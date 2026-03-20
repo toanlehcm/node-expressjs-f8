@@ -1,7 +1,7 @@
 const Course = require('../models/Course');
 const { mutipleMongooseToObject } = require('../../util/mongoose');
 
-class SiteController {
+class CourseController {
     // function constructor.
     // GET /
     // index(req, res) {
@@ -33,4 +33,4 @@ class SiteController {
     }
 }
 
-module.exports = new SiteController(); // Creat an instance of the NewsController class to export.
+module.exports = new CourseController(); // Creat an instance of the CourseController class to export.
