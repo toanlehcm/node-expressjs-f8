@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // Use for form html.
 app.use(express.json()); // Use for code js: XML HTTP request, fetch, axios, request
 
+app.use(methodOverride('_method'))
+
 app.use(morgan('combined'))
 
 // Template engine
@@ -24,6 +27,11 @@ app.engine(
     'hbs',
     handlebars.engine({
         extname: '.hbs',
+        
+        // Custom helper.
+        helpers: {
+            sum: (a, b) => a + b,
+        }
     }),
 );
 app.set('view engine', 'hbs');

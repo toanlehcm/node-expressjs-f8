@@ -23,6 +23,22 @@ class CourseController {
             .then(() => res.redirect('/'))
             .catch(err => res.status(400).json({ error: 'Failed to create course' }));
     }
+
+    // [GET] /courses/:id/edit
+    edit(req, res) {
+        Course.findById(req.params.id)
+            .then(course => res.render('courses/edit', { course: mongooseToObject(course) }))
+            .catch(err => res.status(400).json({ error: 'Failed to fetch course' }));
+    }
+
+    // [PUT] /courses/:id
+    update(req, res) {
+        const formData = req.body;
+        formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+        Course.updateOne({ _id: req.params.id }, formData)
+            .then(() => res.redirect('/me/stored/courses'))
+            .catch(err => res.status(400).json({ error: 'Failed to update course' }));
+    }
 }
 
 module.exports = new CourseController(); // Creat an instance of the CourseController class to export.
