@@ -39,6 +39,13 @@ class CourseController {
             .then(() => res.redirect('/me/stored/courses'))
             .catch(err => res.status(400).json({ error: 'Failed to update course' }));
     }
+
+    // [DELETE] /courses/:id
+    destroy(req, res) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('/me/stored/courses'))
+            .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
+    }
 }
 
 module.exports = new CourseController(); // Creat an instance of the CourseController class to export.
