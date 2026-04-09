@@ -42,7 +42,11 @@ class CourseController {
 
     // [DELETE] /courses/:id
     destroy(req, res) {
-        Course.deleteOne({ _id: req.params.id })
+        // Course.deleteOne({ _id: req.params.id })
+        //     .then(() => res.redirect('/me/stored/courses'))
+        //     .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
+        //--
+        Course.delete({ _id: req.params.id })
             .then(() => res.redirect('/me/stored/courses'))
             .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
     }

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const mongooseSlug = require('mongoose-slug-updater');
+const mongooseDelete = require('mongoose-delete');
 const Schema = mongoose.Schema;
-
-mongoose.plugin(mongooseSlug);
 
 const CourseSchema = new Schema({
     name: { type: String, maxLength: 255, required: true },
@@ -14,5 +13,11 @@ const CourseSchema = new Schema({
     // createAt: { type: Date, default: Date.now },
     // updateAt: { type: Date, default: Date.now },
 }, { timestamps: true });
+
+mongoose.plugin(mongooseSlug);
+CourseSchema.plugin(mongooseDelete, { 
+    deletedAt: true,
+    overrideMethods: 'all' 
+});
 
 module.exports = mongoose.model('Course', CourseSchema);
