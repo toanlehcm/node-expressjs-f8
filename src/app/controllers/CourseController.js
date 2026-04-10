@@ -16,11 +16,11 @@ class CourseController {
 
     // [POST] /courses/store
     store(req, res) {
-        const formData = req.body;
-        formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
-        const course = new Course(formData);
+        // const formData = req.body; // no need to use this variable because formData use same memory space as req.body
+        req.body.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+        const course = new Course(req.body);
         course.save()
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/me/stored/courses'))
             .catch(err => res.status(400).json({ error: 'Failed to create course' }));
     }
 
@@ -42,13 +42,29 @@ class CourseController {
 
     // [DELETE] /courses/:id
     destroy(req, res) {
+        // Hard delete.
         // Course.deleteOne({ _id: req.params.id })
         //     .then(() => res.redirect('/me/stored/courses'))
         //     .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
-        //--
+        
+        //Soft delete.
         Course.delete({ _id: req.params.id })
             .then(() => res.redirect('/me/stored/courses'))
             .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
+    }
+
+    // [PATCH] /courses/:id/restore
+    restore(req, res) {
+        Course.restore({ _id: req.params.id })
+            .then(() => res.redirect('/me/stored/courses'))
+            .catch(err => res.status(400).json({ error: 'Failed to restore course' }));
+    }
+
+    // [DELETE] /courses/:id/force
+    forceDestroy(req, res) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('/me/trash/courses'))
+            .catch(err => res.status(400).json({ error: 'Failed to force delete course' }));
     }
 }
 
