@@ -66,6 +66,19 @@ class CourseController {
             .then(() => res.redirect('/me/trash/courses'))
             .catch(err => res.status(400).json({ error: 'Failed to force delete course' }));
     }
+
+    // [POST] /courses/handle-form-action
+    handleFormAction(req, res) {
+        switch(req.body.action){
+            case 'delete':
+                Course.delete({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('/me/stored/courses'))
+                    .catch(err => res.status(400).json({ error: 'Failed to delete course' }));
+                break;
+            default:
+                res.status(400).json({ error: 'Invalid action' });
+        }
+    }
 }
 
 module.exports = new CourseController(); // Creat an instance of the CourseController class to export.
