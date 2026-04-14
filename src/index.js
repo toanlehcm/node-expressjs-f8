@@ -22,6 +22,30 @@ app.use(methodOverride('_method'))
 
 app.use(morgan('combined'))
 
+app.get('/middleware', 
+    // Middleware 1
+    function(req, res, next) {
+        console.log('middleware 1');
+        if(['vethuong','vevip'].includes(req.query.ve)){
+            req.face = 'adjust-face';
+            return next(); // Pass to next middleware.
+        }else{
+            res.status(403).json({
+                message: 'Forbidden-Access Denied'
+            });
+        }
+    },
+
+    // Middleware 2
+    function(req, res, next) {
+        console.log('middleware 2');
+        res.json({
+            message: 'Success',
+            face: req.face
+        });
+    }
+)
+
 // Template engine
 app.engine(
     'hbs',
