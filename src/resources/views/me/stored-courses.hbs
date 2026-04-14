@@ -3,7 +3,7 @@
     <h3>My courses</h3>
     <a href="/me/trash/courses">Trash ({{deletedCount}})</a>
 
-    <div class="mt-4 d-flex align-items-center" style="gap: 20px">
+    <div class="mt-4 mb-4 d-flex align-items-center" style="gap: 20px">
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
         <label class="form-check-label" for="checkbox-all">
@@ -17,7 +17,7 @@
         <option value="restore">Restore</option>
       </select>
 
-      <button class="btn btn-primary btn-sm check-all-submit-btn disabled">Apply</button>
+      <button class="btn btn-primary btn-sm check-all-submit-btn" disabled>Apply</button>
     </div>
   </div>
   
@@ -91,7 +91,8 @@
   document.addEventListener('DOMContentLoaded', function() {
     var courseId;
     var deleteForm = document.querySelector('form[name="delete-course-form"]');
-    var containerForm = document.forms['container-form'];
+    //var containerForm = document.forms['container-form'];
+    var containerForm = $('form[name="container-form"]');
     var btnDelete = document.getElementById('btn-delete-course');
     var checkboxAll = $('#checkbox-all');
     var courseItemCheckbox = $('input[name="courseIds[]"]');
@@ -122,19 +123,20 @@
     });
 
     // Check all submit button clicked.
-    checkAllSubmitBtn.on('submit', function(e){
-      var isSubmittable = !$(this).hasClass('disabled');
+    {{!-- containerForm.on('submit', function(e){
+      var isSubmittable = !checkAllSubmitBtn.hasClass('disabled');
       if(!isSubmittable){
         e.preventDefault();
       }
-    })
+    }) --}}
 
     function renderCheckAllSubmitBtn(){
       var checkedCount = $('input[name="courseIds[]"]:checked').length;
       if(checkedCount > 0){
-        checkAllSubmitBtn.removeClass('disabled');
+        checkAllSubmitBtn.removeAttr('disabled');
       }else{
-        checkAllSubmitBtn.addClass('disabled');
+        {{!-- checkAllSubmitBtn.attr('disabled','disabled'); --}}
+        checkAllSubmitBtn.attr('disabled',true);
       }
     }
   })
