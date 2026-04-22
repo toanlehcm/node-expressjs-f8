@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 
+const sortMiddleware = require('./app/middlewares/SortMiddleware');
+
 const app = express();
 const port = 3000;
 
@@ -14,11 +16,15 @@ const db = require('./config/db');
 db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/vendor/bootstrap-icons', express.static(path.join(__dirname, '../node_modules/bootstrap-icons')));
 
 app.use(express.urlencoded({ extended: true })); // Use for form html.
 app.use(express.json()); // Use for code js: XML HTTP request, fetch, axios, request
 
 app.use(methodOverride('_method'))
+
+// Add a custom middleware.
+app.use(sortMiddleware());
 
 app.use(morgan('combined'))
 
@@ -54,7 +60,29 @@ app.engine(
         
         // Custom helper.
         helpers: {
-            sum: (a, b) => a + b,
+            sum: (a, b) => a + b,   
+            sortable: (fieldName, sort) => {
+                const sortType = fieldName === sort.column ? sort.type : 'default';
+
+                const icons = {
+                    default: 'bi bi-arrow-down-up',
+                    asc: 'bi bi-arrow-up',
+                    desc: 'bi bi-arrow-down'
+                };
+
+                const types = {
+                    default: 'desc',
+                    asc: 'desc',
+                    desc: 'asc'
+                };
+                
+                const icon = icons[sortType];
+                const type = types[sortType];
+                
+                return `<a href="?_sort&column=${fieldName}&type=${type}">
+                    <i class="${icon}"></i>
+                </a>`;
+            }
         }
     }),
 );
