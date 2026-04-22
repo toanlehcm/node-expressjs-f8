@@ -21,7 +21,10 @@ class CourseController {
         const course = new Course(req.body);
         course.save()
             .then(() => res.redirect('/me/stored/courses'))
-            .catch(err => res.status(400).json({ error: 'Failed to create course' }));
+            .catch(err => {
+                console.error("COURSE CREATE ERROR:", err);
+                res.status(400).json({ error: 'Failed to create course' });
+            });
     }
 
     // [GET] /courses/:id/edit
